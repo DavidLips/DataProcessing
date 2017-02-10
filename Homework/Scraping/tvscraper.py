@@ -53,7 +53,7 @@ def extract_tvseries(dom):
             ratings.append(str(s.content))
 
     #retrieve actors/actresses
-    cast = []
+    casts = []
     each_cast = []
 
     for tv in dom.by_tag("div.lister-item-content"):
@@ -63,7 +63,7 @@ def extract_tvseries(dom):
         each_cast.append(str(tv.by_tag("p")[2].by_tag("a")[3].content))
 
         each_cast = ', '.join(each_cast)
-        cast.append(each_cast)
+        casts.append(each_cast)
         each_cast = []
 
     # retrieve runtimes
@@ -72,7 +72,7 @@ def extract_tvseries(dom):
         for s in e.by_tag("span.runtime"):
             runtimes.append(str(s.content[:2]))
 
-    series_list = zip(titles, ratings, genres, cast, runtimes)
+    series_list = zip(titles, ratings, genres, casts, runtimes)
 
     return series_list 
 
