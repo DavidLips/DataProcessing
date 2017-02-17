@@ -6,7 +6,7 @@
 # 260:         5.180       52.100       1.90  DE BILT
 # 
 # YYYYMMDD = Datum (YYYY=jaar MM=maand DD=dag); "
-# TG       = Etmaalgemiddelde temperatuur (in 0.1 graden Celsius); "
+# TG       = Etmaalgemiddelde temperatuur (in 0.1 graden Celsius)
 # 
 STN,YYYYMMDD,   TG
 # 
