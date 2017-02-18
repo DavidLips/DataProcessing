@@ -1,0 +1,583 @@
+<!-- David Lips - 6225950
+Homework 2 - line graph with JS -->
+
+<!doctype html>
+<html>
+	<head>
+		<title>Data Processing - Homework Week 2</title>
+		 <meta charset="utf-8">
+	</head>
+	<body>
+
+		<!-- Data obtained from http://projects.knmi.nl/klimatologie/daggegevens/selectie.cgi -->
+		<textarea id="rawdata" style="display:none;">
+			#date,maxtemp
+			19910101,   48
+			19910102,  101
+			19910103,   80
+			19910104,   58
+			19910105,   54
+			19910106,   63
+			19910107,   68
+			19910108,   72
+			19910109,   76
+			19910110,   98
+			19910111,   71
+			19910112,   33
+			19910113,   18
+			19910114,   -1
+			19910115,    2
+			19910116,  -13
+			19910117,    2
+			19910118,   -1
+			19910119,   11
+			19910120,   15
+			19910121,   53
+			19910122,   35
+			19910123,    4
+			19910124,    1
+			19910125,    3
+			19910126,   25
+			19910127,   35
+			19910128,   22
+			19910129,  -20
+			19910130,   -6
+			19910131,  -18
+			19910201,  -42
+			19910202,  -44
+			19910203,  -67
+			19910204,  -50
+			19910205,   -9
+			19910206,  -85
+			19910207,  -81
+			19910208,  -73
+			19910209,  -73
+			19910210,  -50
+			19910211,  -33
+			19910212,  -34
+			19910213,  -29
+			19910214,  -26
+			19910215,    7
+			19910216,   13
+			19910217,    1
+			19910218,   13
+			19910219,  -13
+			19910220,    4
+			19910221,   26
+			19910222,   56
+			19910223,  100
+			19910224,   92
+			19910225,   74
+			19910226,   63
+			19910227,   25
+			19910228,   23
+			19910301,   41
+			19910302,   44
+			19910303,   63
+			19910304,   64
+			19910305,   93
+			19910306,  115
+			19910307,  131
+			19910308,  120
+			19910309,  101
+			19910310,  117
+			19910311,  111
+			19910312,  108
+			19910313,   98
+			19910314,  110
+			19910315,   93
+			19910316,  119
+			19910317,  101
+			19910318,   87
+			19910319,  107
+			19910320,  119
+			19910321,   99
+			19910322,   64
+			19910323,   51
+			19910324,   67
+			19910325,   68
+			19910326,   70
+			19910327,   81
+			19910328,   72
+			19910329,   58
+			19910330,   54
+			19910331,   89
+			19910401,  101
+			19910402,  104
+			19910403,   96
+			19910404,   79
+			19910405,   83
+			19910406,   94
+			19910407,   94
+			19910408,   97
+			19910409,   94
+			19910410,  118
+			19910411,  150
+			19910412,  149
+			19910413,  148
+			19910414,  134
+			19910415,  129
+			19910416,   66
+			19910417,   52
+			19910418,   35
+			19910419,   40
+			19910420,   25
+			19910421,   41
+			19910422,   56
+			19910423,   49
+			19910424,   60
+			19910425,   78
+			19910426,   87
+			19910427,   81
+			19910428,   67
+			19910429,   71
+			19910430,   81
+			19910501,   78
+			19910502,   77
+			19910503,   68
+			19910504,   76
+			19910505,   77
+			19910506,   82
+			19910507,   95
+			19910508,  100
+			19910509,   96
+			19910510,  100
+			19910511,  102
+			19910512,  107
+			19910513,  120
+			19910514,  100
+			19910515,   76
+			19910516,   75
+			19910517,   77
+			19910518,   78
+			19910519,  108
+			19910520,  134
+			19910521,  151
+			19910522,  121
+			19910523,   98
+			19910524,   97
+			19910525,  111
+			19910526,  113
+			19910527,  109
+			19910528,  103
+			19910529,  121
+			19910530,  139
+			19910531,  113
+			19910601,  100
+			19910602,  100
+			19910603,   84
+			19910604,   80
+			19910605,   97
+			19910606,  118
+			19910607,  135
+			19910608,  123
+			19910609,  142
+			19910610,  139
+			19910611,  137
+			19910612,  139
+			19910613,  131
+			19910614,  137
+			19910615,  119
+			19910616,  112
+			19910617,  113
+			19910618,  118
+			19910619,  110
+			19910620,  120
+			19910621,  143
+			19910622,  157
+			19910623,  152
+			19910624,  154
+			19910625,  166
+			19910626,  154
+			19910627,  128
+			19910628,  126
+			19910629,  133
+			19910630,  149
+			19910701,  161
+			19910702,  205
+			19910703,  223
+			19910704,  226
+			19910705,  241
+			19910706,  229
+			19910707,  234
+			19910708,  210
+			19910709,  162
+			19910710,  188
+			19910711,  245
+			19910712,  184
+			19910713,  172
+			19910714,  170
+			19910715,  157
+			19910716,  164
+			19910717,  169
+			19910718,  149
+			19910719,  166
+			19910720,  170
+			19910721,  171
+			19910722,  172
+			19910723,  209
+			19910724,  170
+			19910725,  157
+			19910726,  167
+			19910727,  172
+			19910728,  209
+			19910729,  229
+			19910730,  234
+			19910731,  178
+			19910801,  180
+			19910802,  188
+			19910803,  186
+			19910804,  187
+			19910805,  203
+			19910806,  229
+			19910807,  198
+			19910808,  173
+			19910809,  178
+			19910810,  203
+			19910811,  187
+			19910812,  163
+			19910813,  152
+			19910814,  171
+			19910815,  192
+			19910816,  178
+			19910817,  166
+			19910818,  153
+			19910819,  164
+			19910820,  170
+			19910821,  177
+			19910822,  227
+			19910823,  188
+			19910824,  164
+			19910825,  173
+			19910826,  163
+			19910827,  174
+			19910828,  156
+			19910829,  164
+			19910830,  175
+			19910831,  194
+			19910901,  212
+			19910902,  193
+			19910903,  206
+			19910904,  194
+			19910905,  168
+			19910906,  142
+			19910907,  153
+			19910908,  149
+			19910909,  145
+			19910910,  158
+			19910911,  130
+			19910912,  115
+			19910913,  126
+			19910914,  156
+			19910915,  164
+			19910916,  140
+			19910917,  164
+			19910918,  158
+			19910919,  134
+			19910920,  108
+			19910921,  140
+			19910922,  156
+			19910923,  145
+			19910924,  181
+			19910925,  148
+			19910926,  141
+			19910927,  115
+			19910928,  119
+			19910929,  133
+			19910930,  114
+			19911001,  115
+			19911002,  127
+			19911003,  138
+			19911004,  117
+			19911005,  127
+			19911006,  109
+			19911007,  100
+			19911008,  139
+			19911009,  133
+			19911010,  148
+			19911011,  157
+			19911012,  131
+			19911013,  126
+			19911014,  121
+			19911015,  114
+			19911016,  130
+			19911017,   98
+			19911018,   86
+			19911019,   72
+			19911020,   64
+			19911021,   49
+			19911022,   77
+			19911023,  100
+			19911024,  101
+			19911025,   96
+			19911026,   73
+			19911027,   51
+			19911028,   70
+			19911029,   64
+			19911030,   55
+			19911031,   77
+			19911101,  101
+			19911102,  123
+			19911103,   97
+			19911104,   62
+			19911105,   66
+			19911106,   62
+			19911107,  115
+			19911108,   98
+			19911109,   55
+			19911110,   53
+			19911111,   70
+			19911112,   63
+			19911113,   69
+			19911114,   50
+			19911115,   40
+			19911116,    2
+			19911117,   12
+			19911118,   60
+			19911119,   48
+			19911120,   22
+			19911121,   -4
+			19911122,   29
+			19911123,   50
+			19911124,   33
+			19911125,    7
+			19911126,   37
+			19911127,   58
+			19911128,   40
+			19911129,   36
+			19911130,   38
+			19911201,   25
+			19911202,   15
+			19911203,    0
+			19911204,   39
+			19911205,   39
+			19911206,    9
+			19911207,   39
+			19911208,   28
+			19911209,   23
+			19911210,  -22
+			19911211,   -7
+			19911212,    4
+			19911213,    5
+			19911214,    5
+			19911215,  -13
+			19911216,   19
+			19911217,   56
+			19911218,   67
+			19911219,   88
+			19911220,   48
+			19911221,   72
+			19911222,  113
+			19911223,  100
+			19911224,   58
+			19911225,   37
+			19911226,   73
+			19911227,   68
+			19911228,   65
+			19911229,   59
+			19911230,   61
+			19911231,   47
+		</textarea>
+
+		<canvas id="myCanvas" width="800", height="600"></canvas>
+
+		<script>
+
+			// obtain data
+			var rawData = document.getElementById("rawdata").value;
+
+			var lineSplitRawData = rawData.split("\n").slice(1,-1);
+
+			var dates = new Array();
+			var temps = new Array();
+
+			// define canvas
+			var canvas = document.getElementById('myCanvas'); 
+			var ctx = canvas.getContext('2d');
+
+			var height = canvas.height;
+			var width = canvas.width;
+
+
+			//organise data
+			var cleanData = lineSplitRawData.map(function(entry){
+				
+				// remove whitespace
+				entry = entry.replace(/\s/g, '');
+
+				// split dates and temperatures
+				var splitEntry = entry.split(",");
+
+				// format date
+				var year = splitEntry[0].slice(2,4);
+				var month = Number(splitEntry[0].slice(4,6)) - 1;
+				var day = splitEntry[0].slice(6,8);
+
+				splitEntry[0] = new Date(year, month, day);
+
+				//format temp
+				splitEntry[1] = Number(splitEntry[1])
+
+				dates.push(splitEntry[0]);
+				temps.push(splitEntry[1]);
+
+				return splitEntry
+			});
+
+			// convert dates
+			var date0 = dates[0].getTime();
+
+    		convertedDates = dates.map(function(date){
+    			date = (date.getTime() - date0) / 86400000 // ms in 1 day
+
+    			// round number to account for winter/summer time shifts 
+    			return Math.round(date) + 1;
+
+    		});
+
+
+    		// define domain and range
+    		var tempDomain = new Array();
+    		var dateDomain = new Array();
+
+			tempDomain[0] = Math.min.apply(Math, temps),
+    		tempDomain[1] = Math.max.apply(Math, temps);
+
+    		dateDomain[0] = convertedDates[0]
+    		dateDomain[1] = convertedDates[convertedDates.length-1]
+
+    		// buffer for canvas spacing
+    		var canvasBuffer = 50;
+
+    		// transform data
+			var transformTemps = createTransform(tempDomain, [0,height-canvasBuffer]);
+			var transformDates = createTransform(dateDomain, [0,width-canvasBuffer]);
+
+			var transformedDates = convertedDates.map(transformDates);
+			var transformedTemps = temps.map(transformTemps)
+
+			// draw temperature graph in canvas
+			ctx.beginPath();
+
+			// start line at day 0
+			ctx.moveTo(transformedDates[0]+canvasBuffer, height-transformedTemps[0]-canvasBuffer);
+
+			// draw rest of the year
+			for (var i = 1; i < temps.length; ++i) {
+	        	ctx.lineTo(transformedDates[i]+canvasBuffer,height-transformedTemps[i]-canvasBuffer);
+	        	ctx.stroke();
+			}
+
+
+			// draw x-axis
+			var xAxisBuffer = 5;
+			var markerLength = 40;
+			ctx.moveTo(canvasBuffer,height-canvasBuffer+xAxisBuffer);
+			ctx.lineTo(width,height-canvasBuffer+xAxisBuffer)
+			ctx.stroke()
+
+			ctx.font = "14px Arial";
+
+			// add markers for each month of the year
+			var months = ["Jan", "Feb", "Mar", "Apr", "May","Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", ""];
+
+			for (var i = 0; i <= transformedDates[transformedDates.length-1]; i+= (transformedDates[transformedDates.length-1]/12)) {
+
+					// draw marker
+					ctx.moveTo(i+canvasBuffer,height-canvasBuffer+xAxisBuffer)
+					ctx.lineTo(i+canvasBuffer,height-markerLength);
+					ctx.stroke();
+
+					// add month label
+					ctx.fillText(months.shift(),i+markerLength,height-20);
+			}
+
+			// draw y-axis
+			var yAxisHeight = height-canvasBuffer;
+			var yAxisCoordinate = 40;
+			ctx.moveTo(yAxisCoordinate,yAxisHeight);
+			ctx.lineTo(yAxisCoordinate,0);
+			ctx.stroke();
+
+			// define temperature range to display
+			var tempSpan = ((tempDomain[1]-tempDomain[0])/10);
+			var tempRange = tempDomain[1]/10 - 0.5 // show whole temperatures only
+
+			ctx.font = "10px Arial";
+
+			// add temperature labels
+			for (var i = (yAxisHeight / tempSpan)/2 ; i <= yAxisHeight; i+= yAxisHeight/tempSpan ){
+
+				// draw markers
+				ctx.moveTo(30,i);
+				ctx.lineTo(40,i);
+				ctx.stroke();
+
+				// write temperatures
+				ctx.fillText(tempRange,15,i+5);
+				tempRange -= 1				
+			}
+			
+			// Add y axis label unit
+			ctx.font = "12px Arial";
+			ctx.fillText('℃',0,(height-canvasBuffer)/2);
+
+			// add title
+			ctx.font = "20px Arial";
+			ctx.fillText("Average Temperature in 1991",50,20);
+			ctx.fillText("Measured in De Bilt (NL)",50,45);
+
+			function createTransform(domain, range){
+			 	
+			 	// a solution would be:
+			    var domain_min = domain[0]
+			    var domain_max = domain[1]
+			    var range_min = range[0]
+			    var range_max = range[1]
+
+			    // formulas to calculate the alpha and the beta
+			   	var alpha = (range_max - range_min) / (domain_max - domain_min)
+			    var beta = range_max - alpha * domain_max
+
+			    // returns the function for the linear transformation (y= a * x + b)
+			    return function(x){
+			      return alpha * x + beta;
+    			}
+			}
+
+			// name - relative path to the file
+ 			// callback - function to call with file text
+			function readFileHttp(fname, callback) {
+			   xmlhttp = getXmlHttp();
+			   xmlhttp.onreadystatechange = function() {
+			      if (xmlhttp.readyState==4) { 
+			          callback(xmlhttp.responseText);
+			      }
+			   }
+			   xmlhttp.open("GET", fname, true);
+			   xmlhttp.send(null);
+			}
+ 
+			
+			//Return a cross-browser xmlhttp request object
+			function getXmlHttp() {
+			   if (window.XMLHttpRequest) {
+			      xmlhttp=new XMLHttpRequest();
+			   } else if (window.ActiveXObject) {
+			      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			   }
+			   if (xmlhttp == null) {
+			      alert("Your browser does not support XMLHTTP.");
+			   }
+			   return xmlhttp;
+			}
+
+			// here you would read/load data from external file
+			// unfortunately I'm running out of time for  full implementation
+			readFileHttp("KNMI_1991.csv", function(content){
+				// use file content		
+			})
+
+		</script>
+	</body>
+</html>
