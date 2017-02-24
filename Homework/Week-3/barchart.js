@@ -33,7 +33,7 @@ window.onload = function() {
 	chart.call(tip);
 
 	// load json data
-	d3.json("http://rawgit.com/DavidLips/DataProcessing/master/Homework/Week-3/convertCSV2JSON_output.json", function(data){
+	d3.json("https://rawgit.com/DavidLips/DataProcessing/master/Homework/Week-3/convertCSV2JSON_output.json", function(data){
 
 		// convert years 
 		data.forEach(function(d) {
