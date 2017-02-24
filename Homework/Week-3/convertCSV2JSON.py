@@ -35,7 +35,8 @@ def main():
 	# read csv and skip comment lines
 	reader = csv.DictReader(filter(lambda row: row[0]!='#' and row[0]!='"', f), fieldnames = colnames) 
 	# Parse the CSV into JSON  
-	out = json.dumps([row for row in reader])  
+	out = json.dumps([row for row in reader]) 
+
 	# Save the JSON  
 	f = open(outputfile, 'w')  
 	f.write(out)  

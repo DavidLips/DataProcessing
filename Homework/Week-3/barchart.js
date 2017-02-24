@@ -41,7 +41,7 @@ window.onload = function() {
 	    });
 
 		// add domain to scale functions
-		x.domain(data.map(function(d) { return d.year; }))
+		x.domain(data.map(function(d) {return d.year;}))
 		y.domain([0, 450]);
 
 		// create container elements for each bar and set x-position (using transform)
