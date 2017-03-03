@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!-- 
+David Lips - 6225950
+Html file for assignment week 4 - D3 Map
+ -->
+
+<html>
+	<head>
+		<title>Week 4 - D3 map Assignment</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<!-- javascript -->
+		<script src="https://d3js.org/d3.v3.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+		<script type="text/javascript" src="libraries/tip.js"></script>
+		<script type="text/javascript" src="libraries/datamaps.world.hires.min.js"></script>
+		<script type="text/javascript" src="map.js"></script>
+		<!-- stylesheet -->
+		<link rel="stylesheet" type="text/css" href="map.css" media="screen" />
+	</head>
+	<body>
+		<div id="container">
+			<h3 id="title">David Lips - 6225950 <br> National military expenditures (% of GDP) in 2015</h3>
+			<div id="map"></div>	
+			<div id="legend"></div>	
+			<h5>Data obtained from <a href="http://data.worldbank.org/indicator/MS.MIL.XPND.GD.ZS" target="_blank">the World bank </a></h5>
+
+			<div id="text-container">
+			<p> Interactivity choices:</p>
+				<ul>
+				  <li>Showing raw data: As I wanted the data for each country to be visible when actively selecting it, I chose to use a tool tip to show the country name and corresponding raw data upon a mouseover event. Given the varying sizes of the countries, a minimalistic pop up box seemed to me the only effective and clean way to show this (as opposed to labels inside or next to the country). </li>
+				  <br>
+				  <li>Highlighting: I specifically decided not to change the stroke of the country that is being moused-over, as the color value, together with the legend, is an indispensible mechanism to show the country's relative spending compared to other countries. Changing the color upon mouseover would obfuscate the relative value of a country. Instead, I chose to highlight the border of the country with a maximally contrasting color such that it's still clear what country is being selected.</li>
+				  <br>
+				  <li>No data available: Lastly, I also decided to show interactivity for countries that were not included in my dataset, using a similar tool tip to show a 'data not available' message and avoid confusion</li>
+				</ul>
+			</div>
+		</div>
+
+	</body>
+</html>
