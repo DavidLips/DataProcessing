@@ -226,72 +226,6 @@ function makeLineGraph(error, successes, failures){
 						   .attr("class", "line")
 						.attr("d", function(d) { return line(d.values); })
 						  .style("stroke", function(d) { return zScale(d.type); });
-
-					// redefine crosshair 
-					var years = formattedLaunchData[0].values.map(function(d){return d.year})
-					
-					var crosshair = g.append('g').style('display', 'none');
-				                
-				    crosshair.append('line')
-				        .attr('id', 'crossLineX')
-				        .attr('class', 'crossLine');
-				    crosshair.append('line')
-				        .attr('id', 'crossLineY')
-				        .attr('class', 'crossLine');
-				    crosshair.append('circle')
-				        .attr('id', 'crossCircle')
-				        .attr('r', 5)
-				        .attr('class', 'circle crossCircle');
-
-				    var bisectDate = d3.bisector(function(d) { return d; }).left;
-
-				    g.append('rect')
-				        .attr('class', 'overlay')
-				        .attr('width', width)
-				        .attr('height', height)
-				        .on('mouseover', function(d,i) { 
-				        	tooltip.style('display', null);
-				        	crosshair.style('display', null); 
-				        })
-				        .on('mousemove', function() { 
-
-				            var mouse = d3.mouse(this);
-				            var mouseX = xScale.invert(mouse[0]);
-				            var mouseY = yScale.invert(mouse[1]);
-
-				            var i = bisectDate(years, mouseX); // returns the index to the current data item
-				     
-				            var mouseYear = years[i]
-
-				            var nearestResult = findNearest(formattedLaunchData, i, mouseY),
-				            	nearestLineY = nearestResult[0]
-				            	nearestType = nearestResult[1];
-
-				            var x = xScale(mouseYear);
-				            var y = yScale(nearestLineY); 
-
-				            tooltip.transition()		
-				                .duration(50)		
-				                .style("opacity", .9);		
-				            tooltip.html("<span>Succesful "+ nearestType + " launches in " + formatTime(mouseYear) + ":<br/><strong>"+nearestLineY+"</strong>")	
-				                .style("left", d3.event.pageX + "px")		
-				                .style("top", y + "px");	
-				            
-				            crosshair.select('#crossCircle')
-				                .attr('cx', x)
-				                .attr('cy', y);
-				            crosshair.select('#crossLineX')
-				                .attr('x1', x).attr('y1', yScale(yDomain[0]))
-				                .attr('x2', x).attr('y2', yScale(yDomain[1]));
-				            crosshair.select('#crossLineY')
-				                .attr('x1', xScale(xDomain[0])).attr('y1', y)
-				                .attr('x2', xScale(xDomain[1])).attr('y2', y);
-				        }) 
-						.on('mouseout', function(d,i) { 
-				        	tooltip.style('display', 'none')
-				        	crosshair.style('display', 'none'); 
-				        })
-
 					
 				}
 				else if (clickResult === "failure" & clickResult != outcome){
@@ -328,51 +262,33 @@ function makeLineGraph(error, successes, failures){
 						.attr("d", function(d) { return line(d.values); })
 						  .style("stroke", function(d) { return zScale(d.type); });
 
-					launchLines.append("text") // not working..
-						.attr("x", function(){ return xScale(xDomain[1]) + 5})
-						.attr("y", function(d,i){return yScale(formattedLaunchData[i].values[formattedLaunchData[i].values.length-1].launches)})
-						.text(function(d){return d.type})
+					// launchLines.append("text") // not working..
+					// 	.attr("x", function(){ return xScale(xDomain[1]) + 5})
+					// 	.attr("y", function(d,i){return yScale(formattedLaunchData[i].values[formattedLaunchData[i].values.length-1].launches)})
+					// 	.text(function(d){return d.type})
 
-					// redefine crosshair
-					var crosshair = g.append('g').style('display', 'none');
-				                
-				    crosshair.append('line')
-				        .attr('id', 'crossLineX')
-				        .attr('class', 'crossLine');
-				    crosshair.append('line')
-				        .attr('id', 'crossLineY')
-				        .attr('class', 'crossLine');
-				    crosshair.append('circle')
-				        .attr('id', 'crossCircle')
-				        .attr('r', 5)
-				        .attr('class', 'circle crossCircle');
-
-				    var bisectDate = d3.bisector(function(d) { return d; }).left;
-
-				    g.append('rect')
-				        .attr('class', 'overlay')
-				        .attr('width', width)
-				        .attr('height', height)
+					// reconfigure crosshair
+				   d3.select(".overlay")
 				        .on('mouseover', function(d,i) { 
 				        	tooltip.style('display', null);
 				        	crosshair.style('display', null); 
 				        })
 				        .on('mousemove', function() { 
 
-				            var mouse = d3.mouse(this);
-				            var mouseX = xScale.invert(mouse[0]);
-				            var mouseY = yScale.invert(mouse[1]);
+				            mouse = d3.mouse(this);
+				            mouseX = xScale.invert(mouse[0]);
+				            mouseY = yScale.invert(mouse[1]);
 
-				            var i = bisectDate(years, mouseX); // returns the index to the current data item
+				            i = bisectDate(years, mouseX); // returns the index to the current data item
 				     
-				            var mouseYear = years[i]
+				            mouseYear = years[i]
 
-				            var nearestResult = findNearest(formattedLaunchData, i, mouseY),
-				            	nearestLineY = nearestResult[0]
-				            	nearestType = nearestResult[1];
+				            nearestResult = findNearest(formattedLaunchData, i, mouseY)
+				            nearestLineY = nearestResult[0]
+				            nearestType = nearestResult[1];
 
-				            var x = xScale(mouseYear);
-				            var y = yScale(nearestLineY); 
+				           x = xScale(mouseYear);
+				           y = yScale(nearestLineY); 
 
 				            tooltip.transition()		
 				                .duration(50)		
