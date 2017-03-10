@@ -10,11 +10,10 @@ and could not for the life of it figure out what's wrong. Please explain next ti
 */
 
 
-
 window.onload = function() {
 
 
-	queue()
+	d3.queue()
 		.defer(d3.json, 'Data/launch_success.json')
 		.defer(d3.json, 'Data/launch_fail.json')
 		.await(makeLineGraph);
