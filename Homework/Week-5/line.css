@@ -1,0 +1,53 @@
+/*
+David Lips - 6225950
+CSS file for assignment week 5 - D3 Line series
+*/
+
+.axis--x path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.overlay {
+    fill: none;
+    stroke: none;
+    pointer-events: all;
+}
+
+.crossLine {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 0.5px;
+}
+
+.crossCircle {
+    fill: red;
+}
+
+.circle {
+    fill: white;
+    stroke: steelblue;
+    stroke-width: 2px;
+}
+
+.h3 {
+    text-align: center;
+}
+
+.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 130px;					
+    height: 60px;					
+    padding: 5px;				
+    font: 12px sans-serif;		
+    background: lightsteelblue;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}

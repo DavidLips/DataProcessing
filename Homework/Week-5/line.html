@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!-- 
+David Lips - 6225950
+Html file for assignment week 5 - D3 Line series
+ -->
+
+<html>
+	<head>
+		<title>Week 5 - D3 line graph Assignment</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<!-- javascript -->
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+		<script src="http://d3js.org/queue.v1.min.js"></script>
+
+
+		<script type="text/javascript" src="Libraries/tip.js"></script>
+		<script type="text/javascript" src="line.js"></script>
+		<!-- stylesheet -->
+		<link rel="stylesheet" type="text/css" href="line.css" media="screen"/>
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+	</head>
+	<body>
+		<div id="container">
+			<h3 id="title">David Lips - 6225950 <br> Orbital launches 1957-2015</h3>
+
+			<svg width="960" height="500"></svg>
+
+			<div class="btn-group pull-right">
+  				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+   						 Launch result <span class="caret"></span>
+ 				</button>
+  				<ul class="dropdown-menu" role="menu">
+   					<li><a class="option" value="success" href="#">Success</a></li>
+    				<li><a class="option" value="failure" href="#">Failure</a></li>
+  				</ul>
+			</div>
+
+			<h5>Data obtained from <a href="http://www.spacelaunchreport.com/logyear.html" target="_blank">Space Launch Report</a></h5>
+		</div>
+
+	</body>
+</html>
