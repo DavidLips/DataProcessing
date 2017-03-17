@@ -9,8 +9,14 @@ with the toggling of the succesful and failed launch variables. Again, I struggl
 and could not for the life of it figure out what's wrong. Please explain next time. Apologies for the mess.
 */
 
+var margin = {top: 20, right: 80, bottom: 30, left: 40},
+		width = 960 - margin.left - margin.right;
+		height = 500 - margin.top - margin.bottom;
+
 
 window.onload = function() {
+
+
 
 
 	d3.queue()
@@ -32,9 +38,7 @@ function makeLineGraph(error, successes, failures){
 	var outcome = "success",
 		launchData = successes;
 
-	var margin = {top: 20, right: 80, bottom: 30, left: 40},
-		width = 960 - margin.left - margin.right;
-		height = 500 - margin.top - margin.bottom;
+	
 
 	var svg = d3.select("svg"),
 		g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -96,7 +100,7 @@ function makeLineGraph(error, successes, failures){
 	var launchLines = g.selectAll(".launch")
 	    .data(formattedLaunchData)
 	    .enter().append("g")
-	      .attr("class", function(d) { return d.type; });
+	      .attr("class", "launch");
 
 	// draw lines
 	launchLines.append("path")
@@ -194,14 +198,17 @@ function makeLineGraph(error, successes, failures){
 
 				if (clickResult === "success" & clickResult != outcome){
 
+
+
 					outcome = clickResult;
 
 					// update data
 					launchData = successes;				
-					launchData.forEach(function(d) {
-					    d.year = parseDate(d.year);
-					});	
+
+
 					formattedLaunchData = columns.map(function(launchType) { return formatLaunchData(launchType, launchData); });
+
+					console.log(formattedLaunchData)
 
 					// update y-axis
 					yDomain = [ 0, d3.max( formattedLaunchData[0].values.map(function(d){ return Number(d.launches); } )) ]
@@ -214,13 +221,21 @@ function makeLineGraph(error, successes, failures){
 					transition.select(".axis--y") // change the y axis
 					  .call(d3.axisLeft(yScale));	
 
+
+					console.log(launchLines)
+
+					d3.select(".launch").remove();
+
+
+
 					// reset line container and draw new lines (NOT WORKING)
 					launchLines
+					.exit()
 						.remove()
-						.exit()
-					    .data(formattedLaunchData, function(d){return d})
+						
+					    launchLines.data(formattedLaunchData, function(d){return d})
 					    .enter().append("g")
-					      .attr("class", function(d) { return d.type; })
+					      .attr("class", "launch")
 						.append("path")
 						   .attr("class", "line")
 						.attr("d", function(d) { return line(d.values); })
@@ -238,6 +253,8 @@ function makeLineGraph(error, successes, failures){
 					});	
 					var formattedLaunchData = columns.map(function(launchType) { return formatLaunchData(launchType, launchData); });
 
+
+
 					// update y-axis
 					yDomain = [ 0, d3.max( formattedLaunchData[0].values.map(function(d){ return Number(d.launches); } )) ]
 					yScale.domain(yDomain);
@@ -249,13 +266,16 @@ function makeLineGraph(error, successes, failures){
 					 transition.select(".axis--y") // change the y axis
 					  .call(d3.axisLeft(yScale));	
 
+
+					console.log(launchLines)
+
 					// reset line container and draw new lines
 					launchLines
-						.remove()
 						.exit()
+						.remove()
 					    .data(formattedLaunchData, function(d){return d})
 					    .enter().append("g")
-					      .attr("class", function(d) { return d.type; })
+					      .attr("class","launch" )
 						.append("path")
 						   .attr("class", "line")
 						.attr("d", function(d) { return line(d.values); })

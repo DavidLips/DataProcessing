@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!-- 
+David Lips - 6225950
+Html file for assignment week 6 - Interactive series
+
+Current issues: 
+-y-axis is broken. Can fix but at cost of interactivity. 
+-Can't implement functionality to show country-specific data (I want to update the bar chart shown now with
+grouped bar chart showing percentage and total population data per country when clicking on that country, much 
+like shown here: http://bl.ocks.org/anupsavvy/9513382. I can't get it to work however and need some help with this
+next week.
+- in my map, I can't seem to have both a tooltip and separate mouseover/mouseout events via 'done:' Not sure how
+to overcome )
+ -->
+
+<html>
+	<head>
+		<title>Week 6 - D3 map Assignment</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<!-- javascript -->
+		<script type="text/javascript" src="Libraries/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+		<script src="https://d3js.org/d3.v3.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+		<script type="text/javascript" src="Libraries/tip.js"></script>
+		<script type="text/javascript" src="Libraries/datamaps.world.hires.min.js"></script>
+		<script type="text/javascript" src="Libraries/d3-queue.js"></script>
+
+		<script type="text/javascript" src="countries.js"></script>
+		<script type="text/javascript" src="series-bar.js"></script>
+		<script type="text/javascript" src="series-map.js"></script>
+
+		<!-- stylesheet -->
+		<link rel="stylesheet" type="text/css" href="series.css" media="screen" />
+	</head>
+	<body>
+		<div id="container">
+			<h3 id="title">David Lips - 6225950 <br> Projected muslim population growth in Europe: 1990-2030 </h3>
+			<h5>Data obtained from <a href="https://www.theguardian.com/news/datablog/2011/jan/28/muslim-population-country-projection-2030" target="_blank">The Guardian</a></h5>
+
+			<div id="map"></div>
+			<br>	
+			<div class="button-container">
+				
+				    <input 
+				    	   id="option-1990"
+				    	   name="updateButton" 
+				           type="button" 
+				           value="1990" />
+				
+				
+				    <input 
+						    id="option-2010"
+						    name="updateButton" 
+				           type="button" 
+				           value="2010" />
+				
+				
+				    <input 
+				        id="option-2030"
+				    	name="updateButton" 
+				           type="button" 
+				           value="2030" />
+				
+			</div>
+			<br>	
+			<svg class="chart"></svg>
+			
+			
+			
+
+			
+		</div>
+
+	</body>
+</html>
