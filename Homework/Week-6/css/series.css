@@ -1,0 +1,169 @@
+/*
+David Lips - 6225950
+CSS file for assignment week 6 - D3 Interactive series
+*/
+
+#container {
+  overflow-y: scroll;
+  position:relative;
+  top: 50%;
+  left: 50%;
+  margin-top: 0px; 
+  margin-left: -480px; 
+
+}
+
+
+#small-multiple-container {
+  width: 1050px;
+}
+
+#map {
+  position: relative;
+  width:700px;
+  height:500px;
+}
+
+.legend-key path {
+  display: none;
+}
+
+.legend-key text {
+  font-size: 1rem;
+}
+
+.legend-key line {
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+h3 {
+  font-family: Raleway,HelveticaNeue,Helvetica,Arial,sans-serif;
+  margin-left: -1100px; 
+  text-align: center;
+}
+
+#text-container {
+  width: 1000px;
+  word-wrap: break-word;
+}
+
+.chart-container {
+  position:relative;
+
+}
+
+.overview-chart rect {
+  fill: steelblue;
+}
+
+.axis text {
+  font: 10px sans-serif;
+  color: black;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.small-multiple-axis path {
+  display: none;
+}
+
+.small-multiple-axis line, .grid line {
+  stroke-width: .5px;
+  shape-rendering: crispEdges;
+  stroke: #fff;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.x.axis path {
+  display: none;
+}
+
+#multiple-caption {
+  position:relative;
+  left: 7%;
+}
+
+.chart {
+  float: left;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-top:0;
+  padding-left:0;
+}
+
+.background {
+  fill: none;
+}
+
+svg {
+  font-size: 10px;
+}
+ 
+.area {
+  fill: #cec6b9;
+}
+ 
+.line {
+  fill: none;
+  stroke: #74736c;
+  stroke-width: 1.4px;
+}
+ 
+.title {
+  font-size: 12px;
+}
+
+.hidden {
+  display:none;
+  opacity: 0.0;
+}
+
+#button-wrap {
+  position:relative;
+  width: 220px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 40px;
+  right: 25%;
+  margin-bottom: 10px;
+  padding-left: 5px;
+}
+
+.button {
+  cursor: pointer;
+  float: left;
+  width: 100px;
+  height: 30px;
+  text-align: center;
+  background: #fcfcfc;
+  border: 1px solid #cecece;
+  display: block;
+  padding-top: 5px;
+  margin-top: 10px;
+  border-radius: 5px 5px 5px 5px;
+}
+
+.button.active {
+  box-shadow: inset 0px 0px 7px rgba(0,0,0,0.18);
+  pointer-events: none;
+  background-color: #e6e6e6;
+}
+
+#count {
+  border-radius: 5px 0px 0px 5px;
+}
+
+#name {
+  border-radius: 0px 5px 5px 0px;
+}
+
+.datamaps-subunit:hover {
+  stroke-width: 20px;
+}

@@ -2,15 +2,6 @@
 <!-- 
 David Lips - 6225950
 Html file for assignment week 6 - Interactive series
-
-Current issues: 
--y-axis is broken. Can fix but at cost of interactivity. 
--Can't implement functionality to show country-specific data (I want to update the bar chart shown now with
-grouped bar chart showing percentage and total population data per country when clicking on that country, much 
-like shown here: http://bl.ocks.org/anupsavvy/9513382. I can't get it to work however and need some help with this
-next week.
-- in my map, I can't seem to have both a tooltip and separate mouseover/mouseout events via 'done:' Not sure how
-to overcome )
  -->
 
 <html>
@@ -21,19 +12,19 @@ to overcome )
 		<!-- javascript -->
 		<script type="text/javascript" src="Libraries/jquery-3.1.1.min.js"></script>
 		<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-
 		<script src="https://d3js.org/d3.v3.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
 		<script type="text/javascript" src="Libraries/tip.js"></script>
 		<script type="text/javascript" src="Libraries/datamaps.world.hires.min.js"></script>
 		<script type="text/javascript" src="Libraries/d3-queue.js"></script>
-
-		<script type="text/javascript" src="countries.js"></script>
-		<script type="text/javascript" src="series-bar.js"></script>
-		<script type="text/javascript" src="series-map.js"></script>
-
-		<!-- stylesheet -->
-		<link rel="stylesheet" type="text/css" href="series.css" media="screen" />
+		<script type="text/javascript" src="Libraries/isotope.pkgd.min.js"></script>
+		<script type="text/javascript" src="js/countries.js"></script>
+		<script type="text/javascript" src="js/series-small-multiples.js"></script>
+		<script type="text/javascript" src="js/series-bar.js"></script>
+		<script type="text/javascript" src="js/series-map.js"></script>
+		<!-- stylesheets -->
+		<link rel="stylesheet" type="text/css" href="css/series.css" media="screen" />
+		<link rel="stylesheet" href="css/bootstrap.min.css">
 	</head>
 	<body>
 		<div id="container">
@@ -41,31 +32,43 @@ to overcome )
 			<h5>Data obtained from <a href="https://www.theguardian.com/news/datablog/2011/jan/28/muslim-population-country-projection-2030" target="_blank">The Guardian</a></h5>
 
 			<div id="map"></div>
-			<br>	
-			<div class="button-container">
-				
-				    <input 
-				    	   id="option-1990"
-				    	   name="updateButton" 
-				           type="button" 
-				           value="1990" />
-				
-				    <input 
-						    id="option-2010"
-						    name="updateButton" 
-				           type="button" 
-				           value="2010" />
-				
-				    <input 
-				        id="option-2030"
-				    	name="updateButton" 
-				           type="button" 
-				           value="2030" />
-				
+			<br>
+			<div class="chart-container">	
+				<div class="button-container">
+					
+					    <input 
+					    	   id="option-1990"
+					    	   name="updateButton" 
+					           type="button" 
+					           value="1990" />
+					
+					    <input 
+							    id="option-2010"
+							    name="updateButton" 
+					           type="button" 
+					           value="2010" />
+					
+					    <input 
+					        id="option-2030"
+					    	name="updateButton" 
+					           type="button" 
+					           value="2030" />
+					
+				</div>
+				<br>	
+				<svg class="overview-chart"></svg>
+				<svg class="country-chart"></svg>
 			</div>
-			<br>	
-			<svg class="chart"></svg>
-			
+
+		<div id="small-multiple">
+			<h4 id="multiple-caption">Top 25 countries with the highest muslim population percentage share - click button to short</h4>
+			<div id="button-wrap">
+	        	<div id="count" class="button active">POPULATION</div>
+	        	<div id="name" class="button">NAME</div>
+	        </div>
+
+			<div id="small-multiple-container"></div>
+		</div>	
 		</div>
 
 	</body>

@@ -17,22 +17,32 @@ function load(error, europe_1990, europe_2010, europe_2030){
 
 	if (error) throw error;
 
+	// format data
 	format(europe_1990);
 	format(europe_2010);
     format(europe_2030);
 
+
     // create dataobject combining all decades
     var europeAll = combineAllData(europe_1990, europe_2010, europe_2030)
 
-	// makeCountryBarChart(filterCountry("EUR", europeAll));
+    // make small multiples for top 25 muslim countries
+    var top25Countries = selectTopCountries(europeAll, 25);
+    makeSmallMultiples(top25Countries)
 
-	// default: load 1990 data
-	makeYearBarChart(europe_1990);
+    // set default country chart to show Europe's total data
+	makeCountryBarChart(filterCountry("EUR", europeAll));
 
-	data = europe_1990	
+	// make overview bar chart of percentage values starting in 1990
+	makeOverviewBarChart(europe_1990);
+
+	var year = "1990",
+		data = europe_1990
+		currentData = europe_1990	
 
 	var mapData = {};
 
+	// extract specific data
 	percentageValues = data.map(function(country){ return country.population_percentage})
 	populationValues = data.map(function(country){ return country.muslim_population })
 
@@ -47,7 +57,7 @@ function load(error, europe_1990, europe_2010, europe_2030){
 	// fill map dataset in appropriate format
     data.forEach(function(country, index){
 
-        var code = replaceCountryCode(country.iso),
+        var code = country.iso,
         	fullName = country.name, 
             muslimPop = populationValues[index],
             percentage = percentageValues[index];
@@ -80,33 +90,44 @@ function load(error, europe_1990, europe_2010, europe_2030){
             highlightFillColor: function(geo) {
                 return geo['fillColor'] || '#F5F5F5';
             },
-            // only change border color
+            // change border color
             highlightBorderColor: '#3690c0', // color chosen for high contrast
             // create tooltip
-            // NOTE: this is not working when I also use the 'mouseover'/'click' event handlers in 'done:' below!!
-            popupTemplate: function(geo, data) {
-                // show 'data not available' if country not in dataset
+            popupTemplate: function(geo, data,map) {
+               
+               	// get country data from hovering country
+            	var updatedCountry = filterCountry(geo.id, currentData)
+
+                // change color of corresponding country bar in bar chart
+                if (geo.properties.name){
+		        	d3.select("#"+geo.properties.name).style("fill", "orangered")
+		        };
+
+		        // show 'data not available' if country not in dataset
                 if (!data) { return ['<div class="hoverinfo">',
                     '<strong>', geo.properties.name, '</strong>',
                     '<br>No data available<strong>',
                     '</div>'].join(''); }
-                // else return exact spending data
+                // else display exact population data
                 return ['<div class="hoverinfo">',
-                    '<strong>', geo.properties.name, '</strong>',
-                    '<br>Muslim population percentage: <strong>', parseFloat(data.percentage).toFixed(2), '</strong>',
+                    '<strong>', geo.properties.name, '</strong> in ',year,
+                    '<br>Muslim population percentage: <strong>', parseFloat(updatedCountry.population_percentage).toFixed(2), '</strong>',
                     '</div>'].join('');
             }
         },
         done: function(map) {
-        // highlight bar in barchart graph when hovering over country in ma[]
+
 	     map.svg.selectAll('.datamaps-subunit')
-	     	.on('mouseover', function(geo) {
-		        var localData = map.options.data[geo.id]
-		        if ( localData) {
-		          d3.select("#"+localData.name).style("fill", "orangered")
-		        }
-		      })
-	     	.on('mouseout',function(geo) {
+
+	    	.on('mouseout',function(geo) {
+
+	     		$(".hoverinfo").remove() // remove popup on mouseout
+
+	     		// remove border color highlight
+	     		d3.select(".datamaps-subunit."+geo.id)
+	     			.style("stroke", "rgb(222,222,222)")
+
+	     		// restore bar color in overview chart
 		        var localData = map.options.data[geo.id]
 		        if ( localData) {
 		          d3.select("#"+localData.name).style("fill", "steelblue")
@@ -115,29 +136,37 @@ function load(error, europe_1990, europe_2010, europe_2030){
 		    .on('click',function(geo) {
 		        var localData = map.options.data[geo.id]
 		        if ( localData) {
-		         	// in progress: make grouped barchart for country-specific data
+		         	// show grouped bar chart for clicked country
 					countryData = filterCountry(geo.id,europeAll)	
-					makeCountryBarChart(countryData)
+					updateCountryBars(countryData, countryData.name)
 		        }
 		    })
 	    }
 	});
-	// update map and barchart on button click
+
+	// update map and overview barchart on button click
 	$("#option-1990").click(function(){
+		year = "1990"
+		currentData = europe_1990
 		updateBars(europe_1990, "1990")
         updateMap(europe_1990,map)
 	})
 	$("#option-2010").click(function(){
+		year = "2010"
+		currentData = europe_2010
 		updateBars(europe_2010, "2010")
 		updateMap(europe_2010,map)
 	})
 	$("#option-2030").click(function(){
+		year = "2030"
+		currentData = europe_2030
 		updateBars(europe_2030, "2030")
 		updateMap(europe_2030,map)
 	})
 
 }
 
+// combine data for 1990, 2010, and 2030 in one object
 function combineAllData(europe_1990, europe_2010, europe_2030){
 
 	var europeAll = []
@@ -162,65 +191,39 @@ function combineAllData(europe_1990, europe_2010, europe_2030){
 	percentageValues2030 = europe_2030.map(function(country){ return country.population_percentage });
 	populationValues2030 = europe_2030.map(function(country){ return country.muslim_population });
 
-	// organise in one data object
 	for (var i = 0; i < europe_1990.length; i++){
 
 		europeAll.push(
-			{'code': replaceCountryCode(europe_1990[i].iso), 
-			 'year': parseDate("1990"),
-			 'muslim_population': populationValues1990[i],
-			 'population_percentage': percentageValues1990[i]
-			})
-
-		europeAll.push(
-			{'code': replaceCountryCode(europe_2010[i].iso), 
-			 'year': parseDate("2010"),
-			 'muslim_population': populationValues2010[i],
-			 'population_percentage': percentageValues2010[i]
-			})
-
-		europeAll.push(
-			{'code': replaceCountryCode(europe_1990[i].iso), 
-			 'year': parseDate("2030"),
-			 'muslim_population': populationValues2030[i],
-			 'population_percentage': percentageValues2030[i]
+			{'key': europe_1990[i].iso,
+			 'name': europe_1990[i].name,
+			 'values': [{'year': '1990', 'muslim_population': populationValues1990[i], 'population_percentage': percentageValues1990[i], 'date': parseDate("1990")},
+			 		    {'year': '2010', 'muslim_population': populationValues2010[i], 'population_percentage': percentageValues2010[i], 'date': parseDate("2010")},
+			 		    {'year': '2030', 'muslim_population': populationValues2030[i], 'population_percentage': percentageValues2030[i], 'date': parseDate("2030")}]
 			})
 	}
 
-	// add Europe_total entry
+	// add europe total
 	europeAll.push(
-			{'code': "EUR", 
-			 'year': parseDate("1990"),
-			 'muslim_population': totalPopulation1990,
-			 'population_percentage': totalPercentage1990
-			})
-
-	europeAll.push(
-		{'code': "EUR", 
-		 'year': parseDate("2010"),
-		 'muslim_population': totalPopulation2010,
-		 'population_percentage': totalPercentage2010
-		})
-
-	europeAll.push(
-		{'code': "EUR", 
-		 'year': parseDate("2030"),
-		 'muslim_population': totalPopulation2030,
-		 'population_percentage': totalPercentage2030
+		{'key': "EUR", 
+		 'name': "Europe (total)",
+		 'values': [{'year': '1990', 'muslim_population': totalPopulation1990, 'population_percentage': totalPercentage1990, 'date': parseDate("1990")},
+		 		    {'year': '2010', 'muslim_population': totalPopulation2010, 'population_percentage': totalPercentage2010, 'date': parseDate("2010")},
+		 		    {'year': '2030', 'muslim_population': totalPopulation2030, 'population_percentage': totalPercentage2030, 'date': parseDate("2030")}]
 		})
 
 	return europeAll
 }
 
-// select data entries based on country
+
+// select data entries for specific country
 function filterCountry(countryCode,data){
 
-	result = []
+	var result;
 
 	data.forEach(function(entry) {
 
-		if (entry.code == countryCode){
-			result.push(entry)
+		if (entry.key == countryCode || entry.iso == countryCode){
+			result = entry
 		}
 	})
 
@@ -240,11 +243,13 @@ function replaceCountryCode(twoLetterCode){
 
 }
 
-// format data
+// format number data
 function format(data){
 
 	// convert years 
 	data.forEach(function(country) {
+
+		country.iso = replaceCountryCode(country.iso)
 
 		if (country.population_percentage == "<0.1"){ 
 			country.population_percentage = 0 
@@ -261,10 +266,12 @@ function format(data){
 
 }
 
+// change color of map
 function updateMap(data, map){
 
 	colorData = {};
 
+	// create new palette function
 	var percentageValues = data.map(function(country){ return country.population_percentage}),
 		populationValues = data.map(function(country){ return country.muslim_population });
 
@@ -278,7 +285,7 @@ function updateMap(data, map){
 	// fill map dataset in appropriate format
     data.forEach(function(country, index){
 
-        var code = replaceCountryCode(country.iso),
+        var code = country.iso,
             percentage = percentageValues[index];
 
 	    colorData[code] = paletteScale(percentage) // fill color data object for updateChoropleth function
@@ -289,9 +296,34 @@ function updateMap(data, map){
 
 }
 
+// extract selected number of top muslim population countries from dataset
+function selectTopCountries(europeAll, number){
 
+	percentageWithIndex = []
+    indices = []
+    topCountries = []
 
+    // combine index and percentage values
+	for (var i = 0; i < europeAll.length; i++){
+		percentageWithIndex.push([europeAll[i].values[2].population_percentage,i])
+	}
 
+	// sort on percentage
+	percentageWithIndex.sort(function(a,b){ return b[0]-a[0] })
+
+	// extract indices
+	for (var i = 0; i < percentageWithIndex.length; i++){
+		indices.push(percentageWithIndex[i][1])
+	}
+
+	// select countries on indexs
+	indices.slice(0,number).forEach(function(index){
+		topCountries.push(europeAll[index])
+	})
+
+	return topCountries
+
+}
 
 
 
