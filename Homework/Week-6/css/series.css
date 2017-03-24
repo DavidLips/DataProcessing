@@ -13,6 +13,9 @@ CSS file for assignment week 6 - D3 Interactive series
 
 }
 
+#story {
+  width: 900px;
+}
 
 #small-multiple-container {
   width: 1050px;
